@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# React Router는 클라이언트 사이드 라우팅이므로
+# 모든 경로를 index.html로 보내 새로고침 시 404 방지
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
