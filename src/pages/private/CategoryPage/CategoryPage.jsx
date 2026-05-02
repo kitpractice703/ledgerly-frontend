@@ -19,55 +19,81 @@ import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LockIcon from '@mui/icons-material/Lock';
 import AppLayout from '../../../components/AppLayout/AppLayout';
 import { useCategory } from './useCategory';
+
+const TYPE_CHIP_STYLE = {
+  EXPENSE: { backgroundColor: '#fff3e0', color: '#e65100' },
+  INCOME:  { backgroundColor: '#e8f5e9', color: '#4CAF50' },
+};
 
 function CategoryRow({ category, onUpdate, onDelete }) {
   const [name, setName] = useState(category.name);
   const [type, setType] = useState(category.type);
+  const isDefault = category.default;
 
   return (
     <TableRow hover>
       <TableCell>
-        <TextField
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          size="small"
-          sx={{ width: 160 }}
-        />
+        {isDefault ? (
+          <Typography variant="body2">{category.name}</Typography>
+        ) : (
+          <TextField
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            size="small"
+            sx={{ width: 160 }}
+          />
+        )}
       </TableCell>
       <TableCell>
-        <TextField
-          select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          size="small"
-          sx={{ width: 100 }}
-        >
-          <MenuItem value="EXPENSE">지출</MenuItem>
-          <MenuItem value="INCOME">수입</MenuItem>
-        </TextField>
+        {isDefault ? (
+          <Typography variant="body2" color="text.secondary">—</Typography>
+        ) : (
+          <TextField
+            select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            size="small"
+            sx={{ width: 100 }}
+          >
+            <MenuItem value="EXPENSE">지출</MenuItem>
+            <MenuItem value="INCOME">수입</MenuItem>
+          </TextField>
+        )}
       </TableCell>
       <TableCell>
-        <Chip
-          label={category.type === 'EXPENSE' ? '지출' : '수입'}
-          size="small"
-          sx={{
-            backgroundColor: category.type === 'EXPENSE' ? '#fff3e0' : '#e8f5e9',
-            color: category.type === 'EXPENSE' ? '#e65100' : '#4CAF50',
-            fontWeight: 700,
-          }}
-        />
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Chip
+            label={category.type === 'EXPENSE' ? '지출' : '수입'}
+            size="small"
+            sx={{ fontWeight: 700, ...TYPE_CHIP_STYLE[category.type] }}
+          />
+          {isDefault && (
+            <Chip
+              icon={<LockIcon sx={{ fontSize: '0.75rem !important' }} />}
+              label="기본"
+              size="small"
+              variant="outlined"
+              sx={{ fontSize: '0.7rem', height: 20, color: 'text.secondary', borderColor: '#ccc' }}
+            />
+          )}
+        </Stack>
       </TableCell>
       <TableCell align="center">
-        <Stack direction="row" justifyContent="center" spacing={0.5}>
-          <IconButton size="small" color="primary" onClick={() => onUpdate(category.id, name, type)}>
-            <SaveIcon fontSize="small" />
-          </IconButton>
-          <IconButton size="small" onClick={() => onDelete(category.id)} sx={{ color: '#f44336' }}>
-            <DeleteIcon fontSize="small" />
-          </IconButton>
-        </Stack>
+        {isDefault ? (
+          <Typography variant="caption" color="text.disabled">수정 불가</Typography>
+        ) : (
+          <Stack direction="row" justifyContent="center" spacing={0.5}>
+            <IconButton size="small" color="primary" onClick={() => onUpdate(category.id, name, type)}>
+              <SaveIcon fontSize="small" />
+            </IconButton>
+            <IconButton size="small" onClick={() => onDelete(category.id)} sx={{ color: '#f44336' }}>
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          </Stack>
+        )}
       </TableCell>
     </TableRow>
   );
@@ -75,6 +101,9 @@ function CategoryRow({ category, onUpdate, onDelete }) {
 
 export default function CategoryPage() {
   const { categories, form, error, handleChange, handleSubmit, handleUpdate, handleDelete } = useCategory();
+
+  const defaultCategories = categories.filter((c) => c.default);
+  const myCategories = categories.filter((c) => !c.default);
 
   return (
     <AppLayout>
@@ -117,9 +146,29 @@ export default function CategoryPage() {
         </CardContent>
       </Card>
 
-      {/* 카테고리 목록 */}
-      <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>카테고리 목록</Typography>
-      {categories.length === 0 ? (
+      {/* 기본 카테고리 */}
+      <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>기본 카테고리</Typography>
+      <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4 }}>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
+              <TableCell>카테고리명</TableCell>
+              <TableCell>구분 변경</TableCell>
+              <TableCell>현재 구분</TableCell>
+              <TableCell align="center">관리</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {defaultCategories.map((c) => (
+              <CategoryRow key={c.id} category={c} onUpdate={handleUpdate} onDelete={handleDelete} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
+      {/* 내 카테고리 */}
+      <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>내 카테고리</Typography>
+      {myCategories.length === 0 ? (
         <Paper elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, p: 4, textAlign: 'center' }}>
           <Typography color="text.secondary">등록된 카테고리가 없습니다.</Typography>
         </Paper>
@@ -135,7 +184,7 @@ export default function CategoryPage() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {categories.map((c) => (
+              {myCategories.map((c) => (
                 <CategoryRow key={c.id} category={c} onUpdate={handleUpdate} onDelete={handleDelete} />
               ))}
             </TableBody>
