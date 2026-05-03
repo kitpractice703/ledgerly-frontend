@@ -2,8 +2,14 @@
   command = "npm run build"
   publish = "dist"
 
-# React Router는 클라이언트 사이드 라우팅이므로
-# 모든 경로를 index.html로 보내 새로고침 시 404 방지
+# /api/* 요청을 백엔드 서버로 프록시 (Mixed Content 방지)
+[[redirects]]
+  from = "/api/*"
+  to = "http://168.107.7.89/api/:splat"
+  status = 200
+  force = true
+
+# React Router 클라이언트 사이드 라우팅 — 새로고침 시 404 방지
 [[redirects]]
   from = "/*"
   to = "/index.html"
