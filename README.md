@@ -3,6 +3,10 @@
 > **개발 기간:** 2026.03 ~
 >
 > **한 줄 소개:** React + MUI 기반 가계부 SPA — 대시보드·예산 관리·리포트 시각화를 제공하는 프론트엔드 프로젝트
+>
+> **🔗 라이브 데모:** https://ledgerly-kit.netlify.app
+>
+> **🔗 백엔드 저장소:** https://github.com/kitpractice703/ledgerly-backend
 
 ---
 
