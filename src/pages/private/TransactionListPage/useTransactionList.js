@@ -33,8 +33,12 @@ export function useTransactionList() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('삭제하시겠습니까?')) return;
-    await api.delete(`/api/transactions/${id}`);
-    setRefreshTick((t) => t + 1);
+    try {
+      await api.delete(`/api/transactions/${id}`);
+      setRefreshTick((t) => t + 1);
+    } catch {
+      alert('삭제에 실패했습니다.');
+    }
   };
 
   return { transactions, categories, filters, handleFilterChange, handleDelete, navigate };

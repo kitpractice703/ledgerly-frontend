@@ -12,7 +12,7 @@ export function useTransaction() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    api.get('/api/categories').then((res) => setCategories(res.data));
+    api.get('/api/categories').then((res) => setCategories(res.data)).catch(() => {});
     if (id) {
       api.get(`/api/transactions/${id}`).then((res) => {
         const tx = res.data;
@@ -33,10 +33,15 @@ export function useTransaction() {
     e.preventDefault();
     setError('');
     try {
+      const payload = {
+        ...form,
+        categoryId: Number(form.categoryId),
+        amount: Number(form.amount),
+      };
       if (id) {
-        await api.put(`/api/transactions/${id}`, form);
+        await api.put(`/api/transactions/${id}`, payload);
       } else {
-        await api.post('/api/transactions', form);
+        await api.post('/api/transactions', payload);
       }
       navigate('/dashboard');
     } catch (err) {

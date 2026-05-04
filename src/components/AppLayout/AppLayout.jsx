@@ -29,8 +29,8 @@ const DRAWER_WIDTH = 240;
 const NAV_ITEMS = [
   { label: '대시보드', path: '/dashboard', Icon: DashboardIcon },
   { label: '거래내역', path: '/transaction-list', Icon: ReceiptLongIcon },
-  { label: '리포트', path: '/reports', Icon: BarChartIcon },
   { label: '예산관리', path: '/budgets', Icon: AccountBalanceWalletIcon },
+  { label: '리포트', path: '/reports', Icon: BarChartIcon },
   { label: '카테고리', path: '/categories', Icon: CategoryIcon },
   { label: '내 프로필', path: '/profile', Icon: PersonIcon },
 ];

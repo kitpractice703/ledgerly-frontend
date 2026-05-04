@@ -40,8 +40,12 @@ export default function DashboardPage() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('삭제하시겠습니까?')) return;
-    await api.delete(`/api/transactions/${id}`);
-    refresh();
+    try {
+      await api.delete(`/api/transactions/${id}`);
+      refresh();
+    } catch {
+      alert('삭제에 실패했습니다.');
+    }
   };
 
   if (!data) {
@@ -87,7 +91,10 @@ export default function DashboardPage() {
       {/* 예산 현황 */}
       {data.budgetStatuses?.length > 0 && (
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>예산 현황</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Typography variant="h6" fontWeight={700}>예산 현황</Typography>
+            <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
+          </Box>
           <TableContainer component={Paper} elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3 }}>
             <Table size="small">
               <TableHead>
@@ -129,7 +136,10 @@ export default function DashboardPage() {
 
       {/* 거래 내역 */}
       <Box>
-        <Typography variant="h6" fontWeight={700} sx={{ mb: 2, textAlign: 'center' }}>거래 내역</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+          <Typography variant="h6" fontWeight={700}>거래 내역</Typography>
+          <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
+        </Box>
 
         {data.transactions.length === 0 ? (
           <Paper elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, p: 4, textAlign: 'center' }}>

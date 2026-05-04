@@ -80,7 +80,7 @@ export default function ReportPage() {
     name: `${d.month}월`,
     수입: d.income,
     지출: d.expense,
-    isPeakExpense: d.expense === maxExpense && maxExpense > 0,
+    isPeak: d.expense === maxExpense && maxExpense > 0,
   }));
 
   const totalBreakdown = categoryBreakdown.reduce((sum, item) => sum + item.amount, 0);
@@ -97,32 +97,36 @@ export default function ReportPage() {
       </Stack>
 
       {/* 연간 요약 카드 */}
-      {annualSummary && (
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 4 }}>
-          <SummaryCard
-            icon={<TrendingUpIcon />}
-            label="총 수입"
-            amount={annualSummary.totalIncome}
-            color="#4CAF50"
-          />
-          <SummaryCard
-            icon={<TrendingDownIcon />}
-            label="총 지출"
-            amount={annualSummary.totalExpense}
-            color="#f44336"
-          />
-          <SummaryCard
-            icon={<SavingsIcon />}
-            label="순이익"
-            amount={annualSummary.netSavings}
-            sub={`저축률 ${annualSummary.savingsRate}%`}
-            color={annualSummary.netSavings >= 0 ? '#1976D2' : '#f44336'}
-          />
-        </Stack>
-      )}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 0.5 }}>
+        <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
+      </Box>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 4 }}>
+        <SummaryCard
+          icon={<TrendingUpIcon />}
+          label="총 수입"
+          amount={annualSummary.totalIncome}
+          color="#4CAF50"
+        />
+        <SummaryCard
+          icon={<TrendingDownIcon />}
+          label="총 지출"
+          amount={annualSummary.totalExpense}
+          color="#f44336"
+        />
+        <SummaryCard
+          icon={<SavingsIcon />}
+          label="순이익"
+          amount={annualSummary.netSavings}
+          sub={`저축률 ${annualSummary.savingsRate}%`}
+          color={annualSummary.netSavings >= 0 ? '#1976D2' : '#f44336'}
+        />
+      </Stack>
 
       {/* 월별 트렌드 바 차트 */}
-      <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1.5 }}>월별 수입 / 지출</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
+        <Typography variant="subtitle1" fontWeight={700}>월별 수입 / 지출</Typography>
+        <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
+      </Box>
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4 }}>
         <CardContent sx={{ p: 3 }}>
           {!hasAnyData ? (
@@ -146,30 +150,33 @@ export default function ReportPage() {
       </Card>
 
       {/* 카테고리별 분석 */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="subtitle1" fontWeight={700}>카테고리별 분석</Typography>
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          <Tabs
-            value={breakdownType}
-            onChange={(_, v) => setBreakdownType(v)}
-            sx={{ minHeight: 36, '& .MuiTab-root': { minHeight: 36, py: 0.5, fontSize: '0.8rem' } }}
-          >
-            <Tab label="지출" value="EXPENSE" />
-            <Tab label="수입" value="INCOME" />
-          </Tabs>
-          <TextField
-            select
-            size="small"
-            value={month}
-            onChange={(e) => setMonth(Number(e.target.value))}
-            sx={{ width: 80 }}
-          >
-            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-              <MenuItem key={m} value={m}>{m}월</MenuItem>
-            ))}
-          </TextField>
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="subtitle1" fontWeight={700} sx={{ mb: 1 }}>카테고리별 분석</Typography>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+          <Stack direction="row" alignItems="center" spacing={1.5}>
+            <Tabs
+              value={breakdownType}
+              onChange={(_, v) => setBreakdownType(v)}
+              sx={{ minHeight: 36, '& .MuiTab-root': { minHeight: 36, py: 0.5, fontSize: '0.8rem' } }}
+            >
+              <Tab label="지출" value="EXPENSE" />
+              <Tab label="수입" value="INCOME" />
+            </Tabs>
+            <TextField
+              select
+              size="small"
+              value={month}
+              onChange={(e) => setMonth(Number(e.target.value))}
+              sx={{ width: 80 }}
+            >
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                <MenuItem key={m} value={m}>{m}월</MenuItem>
+              ))}
+            </TextField>
+          </Stack>
+          <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
         </Stack>
-      </Stack>
+      </Box>
 
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3 }}>
         <CardContent sx={{ p: 3 }}>

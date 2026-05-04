@@ -6,6 +6,8 @@
 >
 > **🔗 라이브 데모:** https://ledgerly-kit.netlify.app
 >
+> **🔗 백엔드 API:** https://ledgerly-kit.duckdns.org
+>
 > **🔗 백엔드 저장소:** https://github.com/kitpractice703/ledgerly-backend
 
 ---
@@ -67,7 +69,7 @@ src/
 ### ✅ 대시보드
 
 - 선택한 연·월의 총 수입, 총 지출, 잔액을 요약 카드로 표시합니다.
-- 해당 월의 거래 내역 테이블과 예산별 진행률 바를 함께 보여줍니다.
+- 해당 월의 거래 내역 테이블과 카테고리별 예산 현황 테이블을 함께 보여줍니다.
 - 이전/다음 달 네비게이션 버튼으로 월을 이동할 수 있습니다.
 
 ### ✅ 리포트 시각화 (Recharts)
@@ -113,3 +115,17 @@ src/
 
 - **원인:** 페이지가 늘어나면서 `pages/` 하위에 10개 이상의 디렉터리가 flat하게 나열되어 공개 페이지와 인증 전용 페이지의 구분이 불명확했습니다.
 - **해결:** `pages/public/`(비로그인 접근 가능)과 `pages/private/`(로그인 필요)로 분리. `PrivateRoute` 적용 범위도 구조적으로 명확해졌습니다.
+
+---
+
+### 🚨 Issue 4: 로그인 실패 시 인터셉터가 로그아웃 루프 발생
+
+- **원인:** Axios 응답 인터셉터가 모든 401 응답에 대해 `window.location.href = '/login'`으로 리다이렉트했습니다. 로그인 API(`/api/auth/login`)에서 비밀번호 오류 시 발생하는 401도 인터셉터가 가로채 무한 리다이렉트 루프가 발생했습니다.
+- **해결:** `error.config?.url?.includes('/api/auth/')` 조건으로 인증 엔드포인트는 인터셉터에서 제외. `isRedirecting` 플래그를 추가하여 중복 리다이렉트도 방지했습니다.
+
+---
+
+### 🚨 Issue 5: 예산·거래 등록 시 400 오류 (타입 불일치)
+
+- **원인:** HTML `<input type="number">`의 `value`는 항상 `string`으로 반환됩니다. 백엔드 DTO가 `Long`·`Integer` 타입을 기대하는 필드(`categoryId`, `amount`, `limitAmount`)에 문자열이 전달되어 역직렬화 오류가 발생했습니다.
+- **해결:** API 호출 직전 `Number(form.categoryId)`, `Number(form.amount)` 등으로 명시적 타입 변환을 추가했습니다.

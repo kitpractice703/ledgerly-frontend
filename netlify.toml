@@ -5,7 +5,7 @@
 # /api/* 요청을 백엔드 서버로 프록시 (Mixed Content 방지)
 [[redirects]]
   from = "/api/*"
-  to = "http://168.107.7.89/api/:splat"
+  to = "https://ledgerly-kit.duckdns.org/api/:splat"
   status = 200
   force = true
 

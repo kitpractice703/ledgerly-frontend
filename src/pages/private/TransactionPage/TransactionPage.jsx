@@ -16,9 +16,12 @@ export default function TransactionPage() {
   return (
     <AppLayout>
       <Box sx={{ maxWidth: 520 }}>
-        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>
-          {id ? '거래 내역 수정' : '거래 내역 등록'}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 3 }}>
+          <Typography variant="h5" fontWeight={700}>
+            {id ? '거래 내역 수정' : '거래 내역 등록'}
+          </Typography>
+          <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem', mt: 0.5 }}>단위: 원</Typography>
+        </Box>
 
         <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3 }}>
           <CardContent sx={{ p: 3 }}>
@@ -54,11 +57,13 @@ export default function TransactionPage() {
 
               <TextField
                 name="amount"
-                type="number"
+                type="text"
                 label="금액"
-                value={form.amount}
-                onChange={handleChange}
-                inputProps={{ min: 1 }}
+                value={form.amount === '' ? '' : Number(form.amount).toLocaleString()}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/[^0-9]/g, '');
+                  handleChange({ target: { name: 'amount', value: raw } });
+                }}
                 required
                 fullWidth
               />
@@ -71,7 +76,7 @@ export default function TransactionPage() {
                 onChange={handleChange}
                 required
                 fullWidth
-                InputLabelProps={{ shrink: true }}
+                slotProps={{ inputLabel: { shrink: true } }}
               />
 
               <TextField
@@ -87,7 +92,7 @@ export default function TransactionPage() {
                 <Button type="submit" variant="contained" color="primary" fullWidth sx={{ py: 1.5 }}>
                   {id ? '수정하기' : '등록하기'}
                 </Button>
-                <Button variant="outlined" fullWidth sx={{ py: 1.5 }} onClick={() => navigate('/dashboard')}>
+                <Button variant="outlined" fullWidth sx={{ py: 1.5 }} onClick={() => navigate(-1)}>
                   취소
                 </Button>
               </Stack>

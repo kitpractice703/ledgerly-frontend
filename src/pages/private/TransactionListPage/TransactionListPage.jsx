@@ -26,13 +26,13 @@ export default function TransactionListPage() {
 
   return (
     <AppLayout>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
-        <Typography variant="h5" fontWeight={700}>거래 내역</Typography>
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 1.5 }}>거래 내역</Typography>
         <Button variant="contained" color="primary" startIcon={<AddIcon />}
           onClick={() => navigate('/transactions/new')}>
           내역 추가
         </Button>
-      </Stack>
+      </Box>
 
       {/* 필터 */}
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 3 }}>
@@ -93,6 +93,9 @@ export default function TransactionListPage() {
       </Card>
 
       {/* 테이블 */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 0.5 }}>
+        <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
+      </Box>
       {transactions.length === 0 ? (
         <Paper elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, p: 4, textAlign: 'center' }}>
           <Typography color="text.secondary">조회된 거래 내역이 없습니다.</Typography>

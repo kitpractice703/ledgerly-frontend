@@ -4,7 +4,6 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? '',
 });
 
-// 모든 요청에 JWT 토큰 자동 첨부
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -13,12 +12,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// 401 응답 시 토큰 제거 후 로그인 페이지로 이동
+let isRedirecting = false;
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isAuthEndpoint = error.config?.url?.includes('/api/auth/');
+    if (error.response?.status === 401 && !isRedirecting && !isAuthEndpoint) {
+      isRedirecting = true;
       localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('email');
       window.location.href = '/login';
     }
     return Promise.reject(error);

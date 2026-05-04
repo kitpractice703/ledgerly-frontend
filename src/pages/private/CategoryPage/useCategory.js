@@ -7,7 +7,7 @@ export function useCategory() {
   const [error, setError] = useState('');
 
   const fetchCategories = () => {
-    api.get('/api/categories').then((res) => setCategories(res.data));
+    api.get('/api/categories').then((res) => setCategories(res.data)).catch(() => {});
   };
 
   useEffect(() => { fetchCategories(); }, []);
@@ -27,14 +27,22 @@ export function useCategory() {
   };
 
   const handleUpdate = async (id, name, type) => {
-    await api.put(`/api/categories/${id}`, { name, type });
-    fetchCategories();
+    try {
+      await api.put(`/api/categories/${id}`, { name, type });
+      fetchCategories();
+    } catch (err) {
+      alert(err.response?.data || '수정에 실패했습니다.');
+    }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('카테고리를 삭제하시겠습니까?')) return;
-    await api.delete(`/api/categories/${id}`);
-    fetchCategories();
+    try {
+      await api.delete(`/api/categories/${id}`);
+      fetchCategories();
+    } catch (err) {
+      alert(err.response?.data || '삭제에 실패했습니다.');
+    }
   };
 
   return { categories, form, error, handleChange, handleSubmit, handleUpdate, handleDelete };

@@ -20,7 +20,7 @@ export default function ProfilePage() {
 
       {/* 기본 정보 */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>기본 정보</Typography>
-      <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4, maxWidth: 480 }}>
+      <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4 }}>
         <CardContent sx={{ p: 3 }}>
           {profileMsg && <Alert severity="success" sx={{ mb: 2 }}>{profileMsg}</Alert>}
           {profileError && <Alert severity="error" sx={{ mb: 2 }}>{profileError}</Alert>}
@@ -48,7 +48,7 @@ export default function ProfilePage() {
 
       {/* 비밀번호 변경 */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>비밀번호 변경</Typography>
-      <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, maxWidth: 480 }}>
+      <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3 }}>
         <CardContent sx={{ p: 3 }}>
           {pwMsg && <Alert severity="success" sx={{ mb: 2 }}>{pwMsg}</Alert>}
           {pwError && <Alert severity="error" sx={{ mb: 2 }}>{pwError}</Alert>}

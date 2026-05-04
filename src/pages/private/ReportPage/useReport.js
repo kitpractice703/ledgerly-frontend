@@ -8,7 +8,7 @@ export function useReport() {
   const [breakdownType, setBreakdownType] = useState('EXPENSE');
   const [monthlyTrend, setMonthlyTrend] = useState([]);
   const [categoryBreakdown, setCategoryBreakdown] = useState([]);
-  const [annualSummary, setAnnualSummary] = useState(null);
+  const [annualSummary, setAnnualSummary] = useState({ totalIncome: 0, totalExpense: 0, netSavings: 0, savingsRate: 0 });
 
   useEffect(() => {
     api.get('/api/reports/monthly-trend', { params: { year } })
@@ -16,7 +16,7 @@ export function useReport() {
       .catch(() => {});
 
     api.get('/api/reports/annual-summary', { params: { year } })
-      .then((res) => setAnnualSummary(res.data))
+      .then((res) => { if (res.data) setAnnualSummary(res.data); })
       .catch(() => {});
   }, [year]);
 

@@ -32,12 +32,14 @@ function BudgetRow({ status, onUpdate, onDelete }) {
       <TableCell>{status.budget.category.name}</TableCell>
       <TableCell>
         <TextField
-          type="number"
-          value={limitAmount}
-          onChange={(e) => setLimitAmount(e.target.value)}
+          type="text"
+          value={limitAmount === '' ? '' : Number(limitAmount).toLocaleString()}
+          onChange={(e) => {
+            const raw = e.target.value.replace(/[^0-9]/g, '');
+            setLimitAmount(raw);
+          }}
           size="small"
           sx={{ width: 130 }}
-          inputProps={{ min: 1 }}
         />
       </TableCell>
       <TableCell align="right">₩{status.spentAmount.toLocaleString()}</TableCell>
@@ -57,7 +59,7 @@ function BudgetRow({ status, onUpdate, onDelete }) {
       </TableCell>
       <TableCell align="center">
         <Stack direction="row" justifyContent="center" spacing={0.5}>
-          <IconButton size="small" color="primary" onClick={() => onUpdate(status.budget.id, limitAmount)}>
+          <IconButton size="small" color="primary" onClick={() => onUpdate(status.budget.id, Number(limitAmount))}>
             <SaveIcon fontSize="small" />
           </IconButton>
           <IconButton size="small" onClick={() => onDelete(status.budget.id)} sx={{ color: '#f44336' }}>
@@ -104,13 +106,15 @@ export default function BudgetPage() {
               </TextField>
               <TextField
                 name="limitAmount"
-                type="number"
+                type="text"
                 label="한도 금액"
-                value={form.limitAmount}
-                onChange={handleChange}
+                value={form.limitAmount === '' ? '' : Number(form.limitAmount).toLocaleString()}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/[^0-9]/g, '');
+                  handleChange({ target: { name: 'limitAmount', value: raw } });
+                }}
                 required
                 size="small"
-                inputProps={{ min: 1 }}
                 sx={{ minWidth: 140 }}
               />
               <Button type="submit" variant="contained" color="primary" sx={{ height: 40, px: 3 }}>
@@ -122,7 +126,10 @@ export default function BudgetPage() {
       </Card>
 
       {/* 예산 현황 테이블 */}
-      <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>예산 현황</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+        <Typography variant="h6" fontWeight={700}>예산 현황</Typography>
+        <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
+      </Box>
       {budgetStatuses.length === 0 ? (
         <Paper elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, p: 4, textAlign: 'center' }}>
           <Typography color="text.secondary">등록된 예산이 없습니다.</Typography>

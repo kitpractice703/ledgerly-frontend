@@ -14,11 +14,12 @@ export function useBudget() {
 
   const fetchBudgets = () => {
     api.get('/api/budgets', { params: { year, month } })
-      .then((res) => setBudgetStatuses(res.data));
+      .then((res) => setBudgetStatuses(res.data))
+      .catch(() => {});
   };
 
   useEffect(() => {
-    api.get('/api/categories').then((res) => setCategories(res.data));
+    api.get('/api/categories').then((res) => setCategories(res.data)).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -42,7 +43,11 @@ export function useBudget() {
     e.preventDefault();
     setError('');
     try {
-      await api.post('/api/budgets', form);
+      await api.post('/api/budgets', {
+        ...form,
+        categoryId: Number(form.categoryId),
+        limitAmount: Number(form.limitAmount),
+      });
       fetchBudgets();
     } catch (err) {
       setError(err.response?.data || '등록에 실패했습니다.');
@@ -50,14 +55,22 @@ export function useBudget() {
   };
 
   const handleUpdate = async (id, limitAmount) => {
-    await api.put(`/api/budgets/${id}`, null, { params: { limitAmount } });
-    fetchBudgets();
+    try {
+      await api.put(`/api/budgets/${id}`, null, { params: { limitAmount } });
+      fetchBudgets();
+    } catch (err) {
+      alert(err.response?.data || '수정에 실패했습니다.');
+    }
   };
 
   const handleDelete = async (id) => {
     if (!window.confirm('예산을 삭제하시겠습니까?')) return;
-    await api.delete(`/api/budgets/${id}`);
-    fetchBudgets();
+    try {
+      await api.delete(`/api/budgets/${id}`);
+      fetchBudgets();
+    } catch (err) {
+      alert(err.response?.data || '삭제에 실패했습니다.');
+    }
   };
 
   return { budgetStatuses, categories, year, month, form, error, prevMonth, nextMonth, handleChange, handleSubmit, handleUpdate, handleDelete };
