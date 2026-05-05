@@ -108,9 +108,9 @@ export default function DashboardPage() {
               </TableHead>
               <TableBody>
                 {data.budgetStatuses.map((s) => (
-                  <TableRow key={s.budget.id}>
-                    <TableCell>{s.budget.category.name}</TableCell>
-                    <TableCell align="right">₩{s.budget.limitAmount.toLocaleString()}</TableCell>
+                  <TableRow key={s.budgetId}>
+                    <TableCell>{s.categoryName}</TableCell>
+                    <TableCell align="right">₩{s.limitAmount.toLocaleString()}</TableCell>
                     <TableCell align="right">₩{s.spentAmount.toLocaleString()}</TableCell>
                     <TableCell align="right" sx={{ color: s.exceeded ? '#f44336' : '#4CAF50', fontWeight: 600 }}>
                       ₩{s.remaining.toLocaleString()}

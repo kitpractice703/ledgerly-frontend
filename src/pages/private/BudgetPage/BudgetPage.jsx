@@ -25,11 +25,11 @@ import AppLayout from '../../../components/AppLayout/AppLayout';
 import { useBudget } from './useBudget';
 
 function BudgetRow({ status, onUpdate, onDelete }) {
-  const [limitAmount, setLimitAmount] = useState(status.budget.limitAmount);
+  const [limitAmount, setLimitAmount] = useState(status.limitAmount);
 
   return (
     <TableRow hover>
-      <TableCell>{status.budget.category.name}</TableCell>
+      <TableCell>{status.categoryName}</TableCell>
       <TableCell>
         <TextField
           type="text"
@@ -59,10 +59,10 @@ function BudgetRow({ status, onUpdate, onDelete }) {
       </TableCell>
       <TableCell align="center">
         <Stack direction="row" justifyContent="center" spacing={0.5}>
-          <IconButton size="small" color="primary" onClick={() => onUpdate(status.budget.id, Number(limitAmount))}>
+          <IconButton size="small" color="primary" onClick={() => onUpdate(status.budgetId, Number(limitAmount))}>
             <SaveIcon fontSize="small" />
           </IconButton>
-          <IconButton size="small" onClick={() => onDelete(status.budget.id)} sx={{ color: '#f44336' }}>
+          <IconButton size="small" onClick={() => onDelete(status.budgetId)} sx={{ color: '#f44336' }}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </Stack>
@@ -149,7 +149,7 @@ export default function BudgetPage() {
             </TableHead>
             <TableBody>
               {budgetStatuses.map((s) => (
-                <BudgetRow key={s.budget.id} status={s} onUpdate={handleUpdate} onDelete={handleDelete} />
+                <BudgetRow key={s.budgetId} status={s} onUpdate={handleUpdate} onDelete={handleDelete} />
               ))}
             </TableBody>
           </Table>
