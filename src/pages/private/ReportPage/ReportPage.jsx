@@ -59,7 +59,12 @@ function PieLabel({ cx, cy, midAngle, outerRadius, percent }) {
   );
 }
 
-function PeakMonthBar(props) {
+function IncomeBar(props) {
+  const { fill, x, y, width, height } = props;
+  return <rect x={x} y={y} width={width} height={height} fill={fill} rx={4} ry={4} />;
+}
+
+function ExpenseBar(props) {
   const { fill, x, y, width, height, isPeak } = props;
   return <rect x={x} y={y} width={width} height={height} fill={isPeak ? '#d32f2f' : fill} rx={4} ry={4} />;
 }
@@ -141,8 +146,8 @@ export default function ReportPage() {
                 <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${(v / 10000).toFixed(0)}만`} />
                 <Tooltip formatter={(value) => fmt(value)} />
                 <Legend />
-                <Bar dataKey="수입" fill="#4CAF50" shape={<PeakMonthBar />} />
-                <Bar dataKey="지출" fill="#f44336" shape={<PeakMonthBar />} />
+                <Bar dataKey="수입" fill="#4CAF50" shape={<IncomeBar />} />
+                <Bar dataKey="지출" fill="#f44336" shape={<ExpenseBar />} />
               </BarChart>
             </ResponsiveContainer>
           )}
