@@ -1,3 +1,9 @@
+/**
+ * TransactionListPage.jsx - 연도·월·카테고리·타입 필터로 거래 내역을 검색하는 목록 페이지
+ *
+ * [설계] 필터 상태가 바뀔 때마다 API를 재호출하는 방식을 useTransactionList 훅에서 처리합니다.
+ *        이 컴포넌트는 필터 UI와 테이블 렌더링만 담당합니다.
+ */
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -34,7 +40,7 @@ export default function TransactionListPage() {
         </Button>
       </Box>
 
-      {/* 필터 */}
+      {/* 필터: 연도·월·카테고리·타입을 복합 조건으로 필터링합니다. 필터 변경 시 즉시 목록이 갱신됩니다. */}
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 3 }}>
         <CardContent sx={{ p: 2 }}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems="center" flexWrap="wrap">
@@ -92,7 +98,7 @@ export default function TransactionListPage() {
         </CardContent>
       </Card>
 
-      {/* 테이블 */}
+      {/* 테이블: 조회 결과가 없으면 안내 메시지를, 있으면 테이블을 렌더링합니다. */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 0.5 }}>
         <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>
       </Box>

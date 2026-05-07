@@ -1,3 +1,14 @@
+/**
+ * ReportPage.jsx - 연간/월별 재정 통계를 시각화하는 리포트 페이지
+ *
+ * [설계] Recharts 라이브러리를 선택한 이유: React 컴포넌트 기반 SVG 차트 라이브러리로
+ *        MUI와 조합이 자연스럽고, ResponsiveContainer로 반응형 차트를 간단히 구현할 수 있습니다.
+ *
+ * 구성:
+ *  - 연간 요약 카드: 총 수입·지출·순이익·저축률
+ *  - 월별 트렌드 바 차트: 최대 지출월을 강조색(빨간색)으로 표시
+ *  - 카테고리 분석 파이 차트: 수입/지출 타입 전환 및 월 선택 가능
+ */
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -21,8 +32,10 @@ import {
 import AppLayout from '../../../components/AppLayout/AppLayout';
 import { useReport } from './useReport';
 
+// 파이 차트 슬라이스 색상 팔레트. 최대 8개 카테고리를 구분하며, 초과 시 순환(modulo) 적용합니다.
 const PIE_COLORS = ['#1976D2', '#f44336', '#4CAF50', '#FF9800', '#9C27B0', '#00BCD4', '#795548', '#607D8B'];
 
+// 금액을 ₩ 형식의 로케일 문자열로 포맷하는 유틸 함수
 function fmt(value) {
   return `₩${value.toLocaleString()}`;
 }
@@ -46,6 +59,8 @@ function SummaryCard({ icon, label, amount, sub, color }) {
   );
 }
 
+// [설계] 파이 차트 커스텀 라벨 컴포넌트. 비율이 5% 미만인 슬라이스는 라벨을 생략하여
+//        작은 항목에서 라벨이 겹치는 시각적 노이즈를 방지합니다.
 function PieLabel({ cx, cy, midAngle, outerRadius, percent }) {
   if (percent < 0.05) return null;
   const RADIAN = Math.PI / 180;
@@ -64,6 +79,8 @@ function IncomeBar(props) {
   return <rect x={x} y={y} width={width} height={height} fill={fill} rx={4} ry={4} />;
 }
 
+// [설계] isPeak 플래그가 true인 막대(최대 지출월)를 더 진한 빨간색으로 강조하여
+//        사용자가 연간 최대 지출 시점을 한눈에 파악할 수 있도록 합니다.
 function ExpenseBar(props) {
   const { fill, x, y, width, height, isPeak } = props;
   return <rect x={x} y={y} width={width} height={height} fill={isPeak ? '#d32f2f' : fill} rx={4} ry={4} />;
@@ -77,10 +94,13 @@ export default function ReportPage() {
     prevYear, nextYear,
   } = useReport();
 
+  // 연간 거래 데이터가 하나라도 있는지 확인하여 빈 상태 UI를 조건부 렌더링합니다.
   const hasAnyData = monthlyTrend.some((d) => d.income > 0 || d.expense > 0);
 
+  // 최대 지출월을 계산하여 ExpenseBar 컴포넌트에서 강조 표시에 사용합니다.
   const maxExpense = Math.max(...monthlyTrend.map((d) => d.expense), 0);
 
+  // Recharts가 요구하는 데이터 형식으로 변환합니다. dataKey 이름을 한국어로 설정하면 Legend에 자동 반영됩니다.
   const chartData = monthlyTrend.map((d) => ({
     name: `${d.month}월`,
     수입: d.income,
@@ -88,6 +108,7 @@ export default function ReportPage() {
     isPeak: d.expense === maxExpense && maxExpense > 0,
   }));
 
+  // 카테고리별 비율(%) 계산을 위해 해당 월 전체 금액 합산
   const totalBreakdown = categoryBreakdown.reduce((sum, item) => sum + item.amount, 0);
 
   return (

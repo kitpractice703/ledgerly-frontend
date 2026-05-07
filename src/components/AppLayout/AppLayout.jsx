@@ -1,3 +1,13 @@
+/**
+ * AppLayout.jsx - 인증된 사용자 전용 앱 레이아웃 컴포넌트
+ *
+ * [설계] 데스크톱(md 이상)에서는 permanent Drawer(고정 사이드바)를,
+ *        모바일(md 미만)에서는 temporary Drawer(햄버거 메뉴)를 사용합니다.
+ *        MUI의 useMediaQuery 훅으로 반응형 분기를 처리합니다.
+ *
+ * [설계] SidebarContent를 별도 컴포넌트로 분리하여 permanent/temporary 두 Drawer에서
+ *        동일한 콘텐츠를 재사용합니다. 코드 중복 없이 반응형 레이아웃을 구현합니다.
+ */
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -26,6 +36,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const DRAWER_WIDTH = 240;
 
+// [설계] 사이드바 네비게이션 항목을 배열로 선언하여 순서·항목 변경이 이 배열만 수정하면 됩니다.
 const NAV_ITEMS = [
   { label: '대시보드', path: '/dashboard', Icon: DashboardIcon },
   { label: '거래내역', path: '/transaction-list', Icon: ReceiptLongIcon },
@@ -35,7 +46,12 @@ const NAV_ITEMS = [
   { label: '내 프로필', path: '/profile', Icon: PersonIcon },
 ];
 
+/**
+ * SidebarContent - 사이드바 내부 콘텐츠 컴포넌트
+ * permanent/temporary 두 Drawer에서 재사용됩니다.
+ */
 function SidebarContent({ currentPath, onNavClick, onLogout }) {
+  // localStorage에서 닉네임을 읽어 사이드바 하단 프로필 영역에 표시합니다.
   const username = localStorage.getItem('username') || '사용자';
 
   return (
@@ -108,6 +124,7 @@ export default function AppLayout({ children }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleLogout = () => {
+    // 로그아웃 시 localStorage에 저장된 인증 관련 데이터를 모두 제거합니다.
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('email');

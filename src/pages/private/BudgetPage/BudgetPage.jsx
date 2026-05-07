@@ -1,3 +1,12 @@
+/**
+ * BudgetPage.jsx - 월별 예산 등록 및 현황을 관리하는 페이지
+ *
+ * [설계] BudgetRow를 독립 컴포넌트로 분리하여 각 행이 자체 편집 상태(limitAmount)를 가집니다.
+ *        테이블 행 단위로 한도 금액을 수정하고 저장할 수 있어 UX가 개선됩니다.
+ *
+ * [설계] 월 네비게이션, 예산 등록 폼, 현황 테이블 세 섹션으로 구성됩니다.
+ *        상태 관리와 API 호출은 useBudget 훅으로 분리합니다.
+ */
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -24,6 +33,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AppLayout from '../../../components/AppLayout/AppLayout';
 import { useBudget } from './useBudget';
 
+/**
+ * BudgetRow - 예산 현황 테이블의 개별 행 컴포넌트
+ *
+ * [설계] 각 행이 독립적인 limitAmount 상태를 가집니다. 한 행의 수정이 다른 행에 영향을
+ *        주지 않도록 상태를 행 단위로 격리합니다.
+ */
 function BudgetRow({ status, onUpdate, onDelete }) {
   const [limitAmount, setLimitAmount] = useState(status.limitAmount);
 
@@ -82,7 +97,7 @@ export default function BudgetPage() {
         <IconButton onClick={nextMonth} size="small"><ArrowForwardIosIcon fontSize="small" /></IconButton>
       </Stack>
 
-      {/* 예산 등록 폼 */}
+      {/* 예산 등록 폼: 카테고리와 한도 금액을 선택하여 해당 월의 예산을 등록합니다. */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>예산 등록</Typography>
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4 }}>
         <CardContent sx={{ p: 3 }}>
@@ -125,7 +140,7 @@ export default function BudgetPage() {
         </CardContent>
       </Card>
 
-      {/* 예산 현황 테이블 */}
+      {/* 예산 현황 테이블: 실제 지출과 한도를 비교하여 초과 여부를 색상 및 Chip으로 표시합니다. */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant="h6" fontWeight={700}>예산 현황</Typography>
         <Typography variant="caption" sx={{ color: 'text.disabled', fontSize: '0.72rem' }}>단위: 원</Typography>

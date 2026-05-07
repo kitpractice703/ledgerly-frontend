@@ -1,8 +1,14 @@
+/**
+ * useCategory.js - 카테고리 CRUD 상태와 API 로직을 관리하는 Custom Hook
+ *
+ * [설계] fetchCategories를 내부 함수로 선언하여 등록·수정·삭제 후 공통 재조회 로직으로 재사용합니다.
+ */
 import { useEffect, useState } from 'react';
 import api from '../../../api/axios';
 
 export function useCategory() {
   const [categories, setCategories] = useState([]);
+  // 신규 카테고리 등록 폼. type 기본값을 'EXPENSE'로 설정합니다.
   const [form, setForm] = useState({ name: '', type: 'EXPENSE' });
   const [error, setError] = useState('');
 

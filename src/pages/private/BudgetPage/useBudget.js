@@ -1,3 +1,12 @@
+/**
+ * useBudget.js - 예산 페이지의 월 네비게이션, 데이터 페칭, CRUD를 관리하는 Custom Hook
+ *
+ * [설계] fetchBudgets를 내부 함수로 선언하여 등록·수정·삭제 후 공통 재조회 로직으로 재사용합니다.
+ *        useEffect 의존성에 직접 넣지 않고 명시적 호출로 갱신 시점을 제어합니다.
+ *
+ * [설계] form의 year/month를 네비게이션 상태(year, month)와 동기화하여
+ *        예산 등록 시 현재 보고 있는 달에 자동으로 예산이 연결됩니다.
+ */
 import { useEffect, useState } from 'react';
 import api from '../../../api/axios';
 
@@ -56,6 +65,7 @@ export function useBudget() {
 
   const handleUpdate = async (id, limitAmount) => {
     try {
+      // [설계] 한도 금액만 변경하므로 body 없이 query param으로 전달합니다.
       await api.put(`/api/budgets/${id}`, null, { params: { limitAmount } });
       fetchBudgets();
     } catch (err) {

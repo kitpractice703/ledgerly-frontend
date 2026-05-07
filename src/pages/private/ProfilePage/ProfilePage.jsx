@@ -1,3 +1,12 @@
+/**
+ * ProfilePage.jsx - 사용자 기본 정보 수정 및 비밀번호 변경 페이지
+ *
+ * [설계] 프로필(닉네임)과 비밀번호를 별도 섹션·별도 폼으로 분리합니다.
+ *        각 폼은 독립적인 성공/오류 메시지 상태를 가져 서로 영향을 주지 않습니다.
+ *
+ * [보안] 이메일 필드는 disabled로 처리하여 변경 불가임을 UI로 명시합니다.
+ *        비밀번호 변경 시 현재 비밀번호를 먼저 입력받아 서버에서 재검증합니다.
+ */
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -18,7 +27,7 @@ export default function ProfilePage() {
     <AppLayout>
       <Typography variant="h5" fontWeight={700} sx={{ mb: 4 }}>내 프로필</Typography>
 
-      {/* 기본 정보 */}
+      {/* 기본 정보: 이메일은 읽기 전용, 닉네임만 수정 가능합니다. */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>기본 정보</Typography>
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4 }}>
         <CardContent sx={{ p: 3 }}>
@@ -46,7 +55,7 @@ export default function ProfilePage() {
         </CardContent>
       </Card>
 
-      {/* 비밀번호 변경 */}
+      {/* 비밀번호 변경: 현재 비밀번호 검증 후 새 비밀번호로 교체합니다. */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>비밀번호 변경</Typography>
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3 }}>
         <CardContent sx={{ p: 3 }}>

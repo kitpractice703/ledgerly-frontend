@@ -1,3 +1,12 @@
+/**
+ * Navbar.jsx - 공개 페이지(랜딩, 가이드 등)의 상단 네비게이션 바
+ *
+ * [설계] 데스크톱에서는 수평 버튼 메뉴와 로그인·회원가입 버튼을 표시합니다.
+ *        모바일에서는 햄버거 아이콘 클릭 시 우측에서 슬라이드 되는 Drawer 메뉴를 사용합니다.
+ *
+ * [설계] 이 컴포넌트는 비인증(공개) 페이지 전용입니다. 인증 이후 앱 내부에서는
+ *        사이드바 기반의 AppLayout을 사용합니다.
+ */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
@@ -15,6 +24,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
+// 네비게이션 링크 목록. 데스크톱 버튼과 모바일 Drawer 양쪽에서 동일하게 사용합니다.
 const NAV_ITEMS = [
   { label: 'Ledgerly', path: '/' },
   { label: '사용방법', path: '/guide' },

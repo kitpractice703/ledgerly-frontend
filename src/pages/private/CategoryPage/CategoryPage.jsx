@@ -1,3 +1,12 @@
+/**
+ * CategoryPage.jsx - 사용자 카테고리를 등록·수정·삭제하는 관리 페이지
+ *
+ * [설계] CategoryRow를 독립 컴포넌트로 분리하여 각 행이 자체 편집 상태(name, type)를 가집니다.
+ *        테이블 행 단위로 이름과 타입을 수정한 후 저장 버튼으로 반영합니다.
+ *
+ * [설계] 카테고리 삭제 시 해당 카테고리를 사용 중인 거래 내역이 있으면 서버에서 400을 반환합니다.
+ *        CategoryController가 DataIntegrityViolationException을 캐치하여 적절한 오류 메시지를 반환합니다.
+ */
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -22,11 +31,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AppLayout from '../../../components/AppLayout/AppLayout';
 import { useCategory } from './useCategory';
 
+// 수입/지출 타입을 구분하는 Chip의 색상 스타일을 타입 키로 관리합니다.
+// 타입이 추가될 경우 이 객체에만 색상을 추가하면 됩니다.
 const TYPE_CHIP_STYLE = {
   EXPENSE: { backgroundColor: '#fff3e0', color: '#e65100' },
   INCOME:  { backgroundColor: '#e8f5e9', color: '#4CAF50' },
 };
 
+/**
+ * CategoryRow - 카테고리 목록 테이블의 개별 행 컴포넌트
+ *
+ * [설계] 각 행이 독립적인 name/type 편집 상태를 가집니다.
+ *        "현재 구분" 컬럼은 저장 전 원본 타입을, "구분 변경" 컬럼은 편집 중인 값을 표시합니다.
+ */
 function CategoryRow({ category, onUpdate, onDelete }) {
   const [name, setName] = useState(category.name);
   const [type, setType] = useState(category.type);
@@ -81,7 +98,7 @@ export default function CategoryPage() {
     <AppLayout>
       <Typography variant="h5" fontWeight={700} sx={{ mb: 4 }}>카테고리 관리</Typography>
 
-      {/* 카테고리 등록 폼 */}
+      {/* 카테고리 등록 폼: 이름과 타입(수입/지출)을 입력하여 새 카테고리를 등록합니다. */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>카테고리 등록</Typography>
       <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, mb: 4 }}>
         <CardContent sx={{ p: 3 }}>
@@ -118,7 +135,7 @@ export default function CategoryPage() {
         </CardContent>
       </Card>
 
-      {/* 카테고리 목록 */}
+      {/* 카테고리 목록: 등록된 카테고리가 없으면 안내 메시지를, 있으면 테이블을 렌더링합니다. */}
       <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>카테고리 목록</Typography>
       {categories.length === 0 ? (
         <Paper elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 3, p: 4, textAlign: 'center' }}>
