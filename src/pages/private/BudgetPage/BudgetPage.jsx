@@ -1,10 +1,10 @@
 /**
  * BudgetPage.jsx - 월별 예산 등록 및 현황을 관리하는 페이지
  *
- * [설계] BudgetRow를 독립 컴포넌트로 분리하여 각 행이 자체 편집 상태(limitAmount)를 가집니다.
+ * BudgetRow를 독립 컴포넌트로 분리하여 각 행이 자체 편집 상태(limitAmount)를 가집니다.
  *        테이블 행 단위로 한도 금액을 수정하고 저장할 수 있어 UX가 개선됩니다.
  *
- * [설계] 월 네비게이션, 예산 등록 폼, 현황 테이블 세 섹션으로 구성됩니다.
+ * 월 네비게이션, 예산 등록 폼, 현황 테이블 세 섹션으로 구성됩니다.
  *        상태 관리와 API 호출은 useBudget 훅으로 분리합니다.
  */
 import { useState } from 'react';
@@ -36,7 +36,7 @@ import { useBudget } from './useBudget';
 /**
  * BudgetRow - 예산 현황 테이블의 개별 행 컴포넌트
  *
- * [설계] 각 행이 독립적인 limitAmount 상태를 가집니다. 한 행의 수정이 다른 행에 영향을
+ * 각 행이 독립적인 limitAmount 상태를 가집니다. 한 행의 수정이 다른 행에 영향을
  *        주지 않도록 상태를 행 단위로 격리합니다.
  */
 function BudgetRow({ status, onUpdate, onDelete }) {

@@ -1,11 +1,11 @@
 /**
  * AppLayout.jsx - 인증된 사용자 전용 앱 레이아웃 컴포넌트
  *
- * [설계] 데스크톱(md 이상)에서는 permanent Drawer(고정 사이드바)를,
+ * 데스크톱(md 이상)에서는 permanent Drawer(고정 사이드바)를,
  *        모바일(md 미만)에서는 temporary Drawer(햄버거 메뉴)를 사용합니다.
  *        MUI의 useMediaQuery 훅으로 반응형 분기를 처리합니다.
  *
- * [설계] SidebarContent를 별도 컴포넌트로 분리하여 permanent/temporary 두 Drawer에서
+ * SidebarContent를 별도 컴포넌트로 분리하여 permanent/temporary 두 Drawer에서
  *        동일한 콘텐츠를 재사용합니다. 코드 중복 없이 반응형 레이아웃을 구현합니다.
  */
 import { useState } from 'react';
@@ -36,7 +36,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const DRAWER_WIDTH = 240;
 
-// [설계] 사이드바 네비게이션 항목을 배열로 선언하여 순서·항목 변경이 이 배열만 수정하면 됩니다.
+// 사이드바 네비게이션 항목을 배열로 선언하여 순서·항목 변경이 이 배열만 수정하면 됩니다.
 const NAV_ITEMS = [
   { label: '대시보드', path: '/dashboard', Icon: DashboardIcon },
   { label: '거래내역', path: '/transaction-list', Icon: ReceiptLongIcon },

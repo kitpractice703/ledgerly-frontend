@@ -1,7 +1,7 @@
 /**
  * TransactionListPage.jsx - 연도·월·카테고리·타입 필터로 거래 내역을 검색하는 목록 페이지
  *
- * [설계] 필터 상태가 바뀔 때마다 API를 재호출하는 방식을 useTransactionList 훅에서 처리합니다.
+ * 필터 상태가 바뀔 때마다 API를 재호출하는 방식을 useTransactionList 훅에서 처리합니다.
  *        이 컴포넌트는 필터 UI와 테이블 렌더링만 담당합니다.
  */
 import Box from '@mui/material/Box';

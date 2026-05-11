@@ -1,10 +1,10 @@
 /**
  * CategoryPage.jsx - 사용자 카테고리를 등록·수정·삭제하는 관리 페이지
  *
- * [설계] CategoryRow를 독립 컴포넌트로 분리하여 각 행이 자체 편집 상태(name, type)를 가집니다.
+ * CategoryRow를 독립 컴포넌트로 분리하여 각 행이 자체 편집 상태(name, type)를 가집니다.
  *        테이블 행 단위로 이름과 타입을 수정한 후 저장 버튼으로 반영합니다.
  *
- * [설계] 카테고리 삭제 시 해당 카테고리를 사용 중인 거래 내역이 있으면 서버에서 400을 반환합니다.
+ * 카테고리 삭제 시 해당 카테고리를 사용 중인 거래 내역이 있으면 서버에서 400을 반환합니다.
  *        CategoryController가 DataIntegrityViolationException을 캐치하여 적절한 오류 메시지를 반환합니다.
  */
 import { useState } from 'react';
@@ -41,7 +41,7 @@ const TYPE_CHIP_STYLE = {
 /**
  * CategoryRow - 카테고리 목록 테이블의 개별 행 컴포넌트
  *
- * [설계] 각 행이 독립적인 name/type 편집 상태를 가집니다.
+ * 각 행이 독립적인 name/type 편집 상태를 가집니다.
  *        "현재 구분" 컬럼은 저장 전 원본 타입을, "구분 변경" 컬럼은 편집 중인 값을 표시합니다.
  */
 function CategoryRow({ category, onUpdate, onDelete }) {

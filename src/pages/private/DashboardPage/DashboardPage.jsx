@@ -1,10 +1,10 @@
 /**
  * DashboardPage.jsx - 월별 재정 현황을 한눈에 확인하는 메인 대시보드
  *
- * [설계] 수입·지출·잔액 요약 카드, 예산 현황 테이블, 거래 내역 테이블을 하나의 페이지에 구성합니다.
+ * 수입·지출·잔액 요약 카드, 예산 현황 테이블, 거래 내역 테이블을 하나의 페이지에 구성합니다.
  *        데이터 페칭과 월 네비게이션 상태는 useDashboard 훅으로 분리하여 이 컴포넌트는 렌더링에만 집중합니다.
  *
- * [설계] 페이지 진입 시 data가 null이면 로딩 스피너를 표시하고,
+ * 페이지 진입 시 data가 null이면 로딩 스피너를 표시하고,
  *        API 응답 완료 후 전체 레이아웃을 렌더링합니다. (조건부 early return 패턴)
  */
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +37,7 @@ import AppLayout from '../../../components/AppLayout/AppLayout';
 import api from '../../../api/axios';
 import { useDashboard } from './useDashboard';
 
-// [설계] 요약 카드 3개의 설정을 배열로 선언하여 렌더링 로직을 map()으로 일반화합니다.
+// 요약 카드 3개의 설정을 배열로 선언하여 렌더링 로직을 map()으로 일반화합니다.
 //        카드 추가·순서 변경 시 이 배열만 수정하면 되므로 유지보수가 용이합니다.
 const STAT_CARDS = [
   { key: 'totalIncome', label: '총 수입', Icon: TrendingUpIcon, color: '#4CAF50', bg: '#e8f5e9' },

@@ -1,7 +1,7 @@
 /**
  * theme.js - MUI 전역 커스텀 테마 정의
  *
- * [설계] 색상·폰트·모서리 등 디자인 토큰을 한 곳에서 관리하여 일관된 UI를 유지합니다.
+ * 색상·폰트·모서리 등 디자인 토큰을 한 곳에서 관리하여 일관된 UI를 유지합니다.
  *        컴포넌트별로 sx prop에 하드코딩된 색상을 반복하는 대신 테마 변수를 참조합니다.
  */
 import { createTheme } from '@mui/material/styles';
@@ -24,7 +24,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    // [설계] Pretendard를 우선 적용하고, 미설치 환경에서는 Noto Sans KR로 폴백합니다.
+    // Pretendard를 우선 적용하고, 미설치 환경에서는 Noto Sans KR로 폴백합니다.
     //        두 폰트 모두 한국어 가독성에 최적화되어 있습니다.
     fontFamily: '"Pretendard", "Noto Sans KR", sans-serif',
     h1: { fontWeight: 700 },

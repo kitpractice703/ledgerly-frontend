@@ -1,11 +1,11 @@
 /**
  * App.jsx - 애플리케이션 최상위 라우팅 구성
  *
- * [설계] 라우트를 Public(비인증 접근 가능)과 Private(인증 필요) 두 그룹으로 분리합니다.
+ * 라우트를 Public(비인증 접근 가능)과 Private(인증 필요) 두 그룹으로 분리합니다.
  *        Private 라우트는 PrivateRoute 컴포넌트로 감싸 인증 검사를 선언적으로 처리하며,
  *        개별 페이지 컴포넌트는 인증 로직을 알 필요가 없습니다.
  *
- * [설계] TransactionPage를 신규(/transactions/new)와 수정(/transactions/:id/edit) 두
+ * TransactionPage를 신규(/transactions/new)와 수정(/transactions/:id/edit) 두
  *        경로에서 재사용합니다. URL 파라미터 :id 존재 여부로 내부에서 모드를 구분합니다.
  */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

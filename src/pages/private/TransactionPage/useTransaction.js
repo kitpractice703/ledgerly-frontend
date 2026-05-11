@@ -1,7 +1,7 @@
 /**
  * useTransaction.js - 거래 내역 등록/수정 폼의 상태와 API 로직을 관리하는 Custom Hook
  *
- * [설계] URL 파라미터 :id 유무로 등록(POST)과 수정(PUT) 모드를 자동으로 구분합니다.
+ * URL 파라미터 :id 유무로 등록(POST)과 수정(PUT) 모드를 자동으로 구분합니다.
  *        - id 없음: 빈 폼으로 시작 → POST /api/transactions
  *        - id 있음: 기존 데이터를 불러와 폼에 채움 → PUT /api/transactions/:id
  */

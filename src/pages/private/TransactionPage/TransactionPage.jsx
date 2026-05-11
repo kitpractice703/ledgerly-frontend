@@ -1,11 +1,11 @@
 /**
  * TransactionPage.jsx - 거래 내역 등록 및 수정 폼 페이지
  *
- * [설계] 신규 등록(/transactions/new)과 수정(/transactions/:id/edit)을 하나의 컴포넌트로 처리합니다.
+ * 신규 등록(/transactions/new)과 수정(/transactions/:id/edit)을 하나의 컴포넌트로 처리합니다.
  *        URL 파라미터 :id 유무를 useTransaction 훅에서 감지하여 모드를 결정하므로,
  *        이 컴포넌트는 렌더링 모드(제목·버튼 텍스트)만 조건부로 다르게 표시합니다.
  *
- * [설계] 금액 입력 필드는 숫자만 허용하면서 천 단위 구분 기호(,)를 표시합니다.
+ * 금액 입력 필드는 숫자만 허용하면서 천 단위 구분 기호(,)를 표시합니다.
  *        입력 시 비숫자를 제거하고(raw value), 표시 시 toLocaleString()으로 포맷합니다.
  */
 import Box from '@mui/material/Box';

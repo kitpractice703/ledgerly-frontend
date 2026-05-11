@@ -1,7 +1,7 @@
 /**
  * ReportPage.jsx - 연간/월별 재정 통계를 시각화하는 리포트 페이지
  *
- * [설계] Recharts 라이브러리를 선택한 이유: React 컴포넌트 기반 SVG 차트 라이브러리로
+ * Recharts 라이브러리를 선택한 이유: React 컴포넌트 기반 SVG 차트 라이브러리로
  *        MUI와 조합이 자연스럽고, ResponsiveContainer로 반응형 차트를 간단히 구현할 수 있습니다.
  *
  * 구성:
@@ -59,7 +59,7 @@ function SummaryCard({ icon, label, amount, sub, color }) {
   );
 }
 
-// [설계] 파이 차트 커스텀 라벨 컴포넌트. 비율이 5% 미만인 슬라이스는 라벨을 생략하여
+// 파이 차트 커스텀 라벨 컴포넌트. 비율이 5% 미만인 슬라이스는 라벨을 생략하여
 //        작은 항목에서 라벨이 겹치는 시각적 노이즈를 방지합니다.
 function PieLabel({ cx, cy, midAngle, outerRadius, percent }) {
   if (percent < 0.05) return null;
@@ -79,7 +79,7 @@ function IncomeBar(props) {
   return <rect x={x} y={y} width={width} height={height} fill={fill} rx={4} ry={4} />;
 }
 
-// [설계] isPeak 플래그가 true인 막대(최대 지출월)를 더 진한 빨간색으로 강조하여
+// isPeak 플래그가 true인 막대(최대 지출월)를 더 진한 빨간색으로 강조하여
 //        사용자가 연간 최대 지출 시점을 한눈에 파악할 수 있도록 합니다.
 function ExpenseBar(props) {
   const { fill, x, y, width, height, isPeak } = props;
